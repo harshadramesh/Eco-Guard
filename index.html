@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1730">
+  <title>EcoGuard | Campus Resource Monitor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="EcoGuard home">
+        <span class="brand-mark">⌁</span><span>ECO<span>GUARD</span><small>SMART CAMPUS SYSTEM</small></span>
+      </a>
+      <div class="side-label">WORKSPACE</div>
+      <nav class="nav-list">
+        <button class="nav-link active" data-section="dashboard"><span>▦</span> Overview</button>
+        <button class="nav-link" data-section="monitoring"><span>⌖</span> Live monitoring</button>
+        <button class="nav-link" data-section="alerts"><span>⚑</span> Alert center <b id="navAlertCount">0</b></button>
+        <button class="nav-link" data-section="recommendations"><span>✳</span> Recommendations</button>
+        <button class="nav-link" data-section="carbon"><span>♧</span> Carbon impact</button>
+        <button class="nav-link" data-section="leaderboard"><span>🏆</span> Green leaderboard</button>
+        <button class="nav-link" data-section="prediction"><span>⌁</span> Predictions</button>
+        <button class="nav-link" data-section="anomalies"><span>⚠</span> Anomaly intelligence</button>
+        <button class="nav-link" data-section="maintenance"><span>⚒</span> Maintenance tickets</button>
+        <button class="nav-link" data-section="assistant"><span>✳</span> AI assistant</button>
+        <button class="nav-link" data-section="about"><span>ⓘ</span> About EcoGuard</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="side-status"><span class="pulse"></span><div><strong>Simulation active</strong><small>Demo sensor network</small></div></div>
+        <div class="side-foot">ECOGUARD v1.0 <span>•</span> HACKATHON EDITION</div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+        <div><div class="eyebrow">CAMPUS RESOURCE INTELLIGENCE</div><h1 id="pageTitle">Overview</h1></div>
+        <div class="top-actions"><span class="live-pill"><i></i> LIVE SIMULATION</span><span class="avatar">AD</span></div>
+      </header>
+
+      <section class="page-section active" id="dashboard">
+        <div class="welcome-row">
+          <div><h2>Good evening, Admin <span>✦</span></h2><p>Here’s how your campus resources are performing today.</p></div>
+          <div class="date-chip" id="todayLabel"></div>
+        </div>
+        <div class="metric-grid">
+          <article class="metric-card"><div class="metric-top"><span class="metric-icon blue">ϟ</span><span class="metric-label">ELECTRICITY CONSUMED</span></div><div class="metric-value" id="totalElectricity">— <small>kWh</small></div><div class="metric-foot"><span class="trend neutral">●</span> Across all monitored zones</div></article>
+          <article class="metric-card"><div class="metric-top"><span class="metric-icon cyan">♒</span><span class="metric-label">WATER CONSUMED</span></div><div class="metric-value" id="totalWater">— <small>L</small></div><div class="metric-foot">Across all monitored zones</div></article>
+          <article class="metric-card"><div class="metric-top"><span class="metric-icon orange">⌁</span><span class="metric-label">EST. RESOURCE WASTAGE</span></div><div class="metric-value" id="totalWaste">— <small>units</small></div><div class="metric-foot">Illustrative excess above baseline</div></article>
+          <article class="metric-card"><div class="metric-top"><span class="metric-icon green">⚑</span><span class="metric-label">ACTIVE ALERTS</span></div><div class="metric-value" id="activeAlerts">—</div><div class="metric-foot"><span class="status-dot red"></span> Needs administrator review</div></article>
+        </div>
+        <div class="content-grid">
+          <article class="panel efficiency-panel">
+            <div class="panel-heading"><div><h3>Resource efficiency</h3><p>Campus-wide performance indicator</p></div><span class="tag">TODAY</span></div>
+            <div class="efficiency-content"><div class="score-ring" id="scoreRing"><div><strong id="efficiencyScore">—</strong><small>/ 100</small></div></div><div class="score-copy"><strong id="efficiencyLabel">Calculating...</strong><p>Higher scores indicate consumption closer to expected operating levels.</p><div class="legend-line"><i class="legend-green"></i> Efficient <i class="legend-orange"></i> Needs attention</div></div></div>
+          </article>
+          <article class="panel quick-panel">
+            <div class="panel-heading"><div><h3>System snapshot</h3><p>Latest simulated network activity</p></div><span class="live-pill small"><i></i> ACTIVE</span></div>
+            <div class="snapshot-row"><span class="snapshot-icon">▦</span><div><strong id="zoneCount">5</strong><small>Monitored zones</small></div><span class="snapshot-right">Buildings + hostels</span></div>
+            <div class="snapshot-row"><span class="snapshot-icon">◷</span><div><strong id="lastUpdated">—</strong><small>Last reading update</small></div><span class="snapshot-right">Local time</span></div>
+            <button class="primary-btn full" id="simulateBtn">＋ Simulate new readings</button>
+          </article>
+        </div>
+        <div class="content-grid charts-grid">
+          <article class="panel chart-panel"><div class="panel-heading"><div><h3>Consumption trends</h3><p>Daily totals across the last 7 days</p></div><span class="chart-note">Illustrative data</span></div><div class="chart-wrap"><canvas id="trendChart"></canvas></div></article>
+          <article class="panel chart-panel"><div class="panel-heading"><div><h3>Zone comparison</h3><p>Current usage by monitored location</p></div></div><div class="chart-wrap"><canvas id="compareChart"></canvas></div></article>
+        </div>
+        <article class="panel table-panel"><div class="panel-heading"><div><h3>Zone status</h3><p>Quick view of electricity and water usage</p></div><button class="text-btn" data-go="monitoring">View all zones →</button></div><div class="table-scroll"><table><thead><tr><th>LOCATION</th><th>ELECTRICITY</th><th>WATER</th><th>STATUS</th></tr></thead><tbody id="overviewZones"></tbody></table></div></article>
+      </section>
+
+      <section class="page-section" id="monitoring">
+        <div class="section-intro"><div><h2>Campus & hostel monitoring</h2><p>Inspect consumption by building and hostel block.</p></div><button class="primary-btn" id="monitorSimulate">＋ Simulate readings</button></div>
+        <div class="monitor-layout">
+          <article class="panel zone-list-panel"><div class="panel-heading"><div><h3>Monitored locations</h3><p>Select a zone to inspect</p></div></div><div id="zoneList" class="zone-list"></div></article>
+          <article class="panel zone-detail"><div class="panel-heading"><div><span class="eyebrow">SELECTED LOCATION</span><h3 id="selectedZoneName">—</h3><p id="selectedZoneType">—</p></div><span id="selectedStatus" class="status-pill">—</span></div>
+            <div class="detail-metrics"><div><small>Electricity today</small><strong id="selectedElectricity">—</strong><span>kWh</span></div><div><small>Water today</small><strong id="selectedWater">—</strong><span>litres</span></div></div>
+            <div class="threshold-box"><h4>Monitoring thresholds</h4><div class="threshold-line"><span>Electricity baseline</span><strong id="electricBaseline">—</strong></div><div class="threshold-line"><span>Water baseline</span><strong id="waterBaseline">—</strong></div><p>Readings are simulated. Threshold crossings indicate possible wastage, not a confirmed physical fault.</p></div>
+          </article>
+        </div>
+        <article class="panel chart-panel monitoring-chart"><div class="panel-heading"><div><h3>Selected zone trend</h3><p>Recent simulated readings</p></div></div><div class="chart-wrap"><canvas id="zoneChart"></canvas></div></article>
+      </section>
+
+      <section class="page-section" id="alerts">
+        <div class="section-intro"><div><h2>Alert center</h2><p>Review unusual consumption and track follow-up actions.</p></div><div class="alert-summary" id="alertSummary">0 active alerts</div></div>
+        <div class="filter-row"><span>FILTER BY PRIORITY</span><select id="alertFilter"><option value="all">All priorities</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select><select id="alertStateFilter"><option value="active">Active alerts</option><option value="all">All alerts</option><option value="resolved">Resolved</option></select></div>
+        <div id="alertList" class="alert-list"></div>
+      </section>
+
+      <section class="page-section" id="recommendations">
+        <div class="section-intro"><div><h2>Resource-saving recommendations</h2><p>Practical actions generated from the latest readings.</p></div><span class="tag">SMART INSIGHTS</span></div>
+        <div id="recommendationList" class="recommendation-grid"></div>
+        <div class="note-panel"><strong>About estimated savings</strong><p>All savings shown are illustrative estimates based on the simulated excess above a zone's baseline. They are not measured financial savings or verified engineering estimates.</p></div>
+      </section>
+
+
+      <!-- NEW FEATURE: CARBON FOOTPRINT -->
+      <section class="page-section" id="carbon">
+        <div class="section-intro"><div><div class="eyebrow">ENVIRONMENTAL IMPACT</div><h2>Carbon footprint calculator</h2><p>Translate campus electricity and water use into environmental impact estimates.</p></div><span class="tag">INDIA GRID ESTIMATE</span></div>
+        <div class="metric-grid">
+          <article class="metric-card"><div class="metric-top"><span class="metric-icon green">☁</span><span class="metric-label">ESTIMATED ELECTRICITY CO₂</span></div><div class="metric-value" id="carbonEmissions">— <small>kg CO₂</small></div><div class="metric-foot">Based on current electricity consumption</div></article>
+          <article class="metric-card"><div class="metric-top"><span class="metric-icon cyan">♒</span><span class="metric-label">ESTIMATED WATER WASTAGE</span></div><div class="metric-value" id="waterWastage">— <small>litres</small></div><div class="metric-foot">Above expected zone baselines</div></article>
+          <article class="metric-card"><div class="metric-top"><span class="metric-icon green">↘</span><span class="metric-label">POTENTIAL CO₂ AVOIDED</span></div><div class="metric-value" id="carbonAvoided">— <small>kg</small></div><div class="metric-foot">If excess electricity is corrected</div></article>
+          <article class="metric-card"><div class="metric-top"><span class="metric-icon orange">✳</span><span class="metric-label">MONTHLY ECO SCORE</span></div><div class="metric-value" id="monthlyEcoScore">— <small>/100</small></div><div class="metric-foot">Illustrative resource-efficiency score</div></article>
+        </div>
+        <div class="content-grid">
+          <article class="panel"><h3>Electricity emissions estimate</h3><p class="muted-copy">CO₂ (kg) = electricity (kWh) × emission factor</p><div class="formula-card" id="carbonFormula">— kWh × 0.675 = — kg CO₂</div><div class="source-note"><b>Emission factor: 0.675 kg CO₂/kWh</b><br>India national grid weighted-average factor, CEA CO₂ Baseline Database v22.0, FY 2025–26. This is a national factor, not a Tamil Nadu-only factor. Select the factor for the financial year of the electricity being reported. <a href="https://cea.nic.in/cdm-co2-baseline-view?lang=en&mappingId=234" target="_blank" rel="noopener">CEA source database ↗</a></div><p class="disclaimer">Estimate only. It represents grid-electricity CO₂ emissions, not a complete life-cycle carbon footprint. Use actual billed kWh and the matching financial-year factor for formal reporting.</p></article>
+          <article class="panel"><h3>Corrective-action savings simulator</h3><p class="muted-copy">Choose a reduction in excess consumption to estimate potential environmental savings.</p><label class="range-label" for="carbonReduction">Reduce excess use by <b id="carbonReductionLabel">30%</b></label><input type="range" id="carbonReduction" min="5" max="80" step="5" value="30"><div class="savings-grid"><div><small>Potential CO₂ avoided</small><strong id="simCarbonSaved">— kg</strong></div><div><small>Potential water saved</small><strong id="simWaterSaved">— L</strong></div></div><p class="disclaimer">Potential savings become verified only after comparing measured consumption before and after maintenance.</p></article>
+        </div>
+      </section>
+
+      <!-- NEW FEATURE: BLOCK VS BLOCK / STREAM VS STREAM -->
+      <section class="page-section" id="leaderboard">
+        <div class="section-intro"><div><div class="eyebrow">CAMPUS-WIDE PARTICIPATION</div><h2>Green campus leaderboard</h2><p>Team competition between college blocks and academic streams—not individual students.</p></div><span class="tag">TEAM CHALLENGE</span></div>
+        <div class="segmented-control"><button class="segment active" data-rank-mode="blocks">Block vs Block</button><button class="segment" data-rank-mode="streams">Stream vs Stream</button></div>
+        <div class="content-grid leaderboard-grid">
+          <article class="panel"><div class="panel-heading"><div><h3 id="leaderboardHeading">Block sustainability rankings</h3><p>Eco-points calculated from resource efficiency and improvements</p></div><span class="tag">MONTHLY</span></div><div id="leaderboardList" class="leaderboard-list"></div></article>
+          <article class="panel challenge-card"><div class="eyebrow">MONTHLY GREEN CAMPUS CHALLENGE</div><h3 id="challengeTitle">Power Down 10%</h3><p id="challengeDescription">Each block works together to reduce electricity consumption by 10% compared with its baseline.</p><div class="challenge-progress"><div><b>Illustrative campus progress</b><strong id="challengeProgressText">0%</strong></div><div class="progress-track"><span id="challengeProgressBar"></span></div></div><button class="primary-btn full" id="joinChallenge">Join this challenge</button><div class="reward-box"><span>🏅</span><div><b>Winning team reward</b><small>Green Champion certificate and campus recognition</small></div></div><p class="disclaimer">Points and challenge progress are simulated for the prototype. No individual student ranking is collected.</p></article>
+        </div>
+        <article class="panel"><h3>How team eco-points are earned</h3><div class="points-rules"><div><b>+100</b><span>For achieving the monthly 10% reduction target</span></div><div><b>+50</b><span>For completing an assigned resource-saving challenge</span></div><div><b>+25</b><span>For verified maintenance follow-up and re-check</span></div></div></article>
+      </section>
+
+      <!-- NEW FEATURE: PREDICTIONS -->
+      <section class="page-section" id="prediction">
+        <div class="section-intro"><div><div class="eyebrow">LOOK AHEAD</div><h2>Predictive resource consumption</h2><p>Estimate next month's consumption using a simple trend from recent readings.</p></div><span class="tag">7-DAY TREND MODEL</span></div>
+        <div class="content-grid prediction-grid">
+          <article class="panel prediction-card"><span class="metric-label">PROJECTED NEXT 30 DAYS · ELECTRICITY</span><strong id="predictedElectricity">— kWh</strong><p id="electricPredictionText">Calculating from recent readings…</p><div class="prediction-callout" id="electricPredictionAction">Suggested action will appear here.</div></article>
+          <article class="panel prediction-card"><span class="metric-label">PROJECTED NEXT 30 DAYS · WATER</span><strong id="predictedWater">— L</strong><p id="waterPredictionText">Calculating from recent readings…</p><div class="prediction-callout" id="waterPredictionAction">Suggested action will appear here.</div></article>
+        </div>
+        <article class="panel"><div class="panel-heading"><div><h3>How the prediction works</h3><p>Transparent statistical estimate, not a trained AI model</p></div></div><p class="muted-copy">The prototype fits a straight-line trend to the latest seven daily readings and projects the next 30 days. A short history can be noisy, so treat the result as an early planning signal—not a guaranteed forecast.</p><div id="predictionBreakdown" class="prediction-breakdown"></div></article>
+      </section>
+
+      <!-- NEW FEATURE: STATISTICAL ANOMALY DETECTION -->
+      <section class="page-section" id="anomalies">
+        <div class="section-intro"><div><div class="eyebrow">STATISTICAL MONITORING</div><h2>AI-powered anomaly detection</h2><p>Find readings that are unusually high compared with recent history and expected baselines.</p></div><button class="primary-btn" id="runAnomalyScan">Run anomaly scan</button></div>
+        <div class="note-panel"><b>Adaptive detection method:</b> EcoGuard compares each new reading with its recent historical average and standard deviation. When enough timestamped samples are available, it prefers readings from the same hour of day. Inspection feedback adjusts each zone/resource alert sensitivity: confirmed faults lower the deviation limit, while no-fault inspections raise it. This is transparent statistical detection—not a trained AI model. An alert is a signal to investigate, not proof of a fault.</div>
+        <div id="anomalyResults" class="anomaly-results"></div>
+      </section>
+
+      <!-- NEW FEATURE: MAINTENANCE WORKFLOW -->
+      <section class="page-section" id="maintenance">
+        <div class="section-intro"><div><div class="eyebrow">TURN INSIGHTS INTO ACTION</div><h2>Maintenance & resolution workflow</h2><p>Dispatch flagged alerts to a maintenance team, record inspection findings and use verified outcomes to refine future alerts.</p></div><span class="tag" id="ticketCount">0 TICKETS</span></div>
+        <div class="content-grid maintenance-top">
+          <article class="panel"><h3>Create a maintenance ticket</h3><form id="ticketForm" class="ticket-form"><label>Campus block<select id="ticketZone" required></select></label><label>Resource<select id="ticketResource"><option>Electricity</option><option>Water</option><option>General inspection</option></select></label><label>Assign to<select id="ticketAssignee"><option>Electrical maintenance team</option><option>Plumbing maintenance team</option><option>Facilities team</option></select></label><label>Issue description<textarea id="ticketDescription" rows="3" placeholder="Describe what needs to be inspected…" required></textarea></label><button class="primary-btn" type="submit">＋ Create ticket</button></form></article>
+          <article class="panel"><h3>Resolution checklist</h3><ul class="checklist"><li>Inspect AC units, lighting and equipment schedules.</li><li>Check taps, flush valves, tanks and visible pipework.</li><li>Record the corrective action and completion time.</li><li>Take a new reading and compare it with the previous reading.</li></ul><p class="disclaimer">When maintenance staff finish an inspection, record the actual finding and notes. EcoGuard stores the outcome and adjusts future anomaly sensitivity for that zone and resource. The demo does not pretend that an inspection or repair happened automatically.</p></article>
+        </div>
+        <div id="ticketList" class="ticket-list"></div>
+        <div id="verifiedSavings" class="verified-savings"></div>
+      </section>
+
+      <!-- NEW FEATURE: CAMPUS DATA ASSISTANT -->
+      <section class="page-section" id="assistant">
+        <div class="section-intro"><div><div class="eyebrow">ASK YOUR CAMPUS DATA</div><h2>EcoGuard sustainability assistant</h2><p>Ask questions about readings, anomalies, blocks and practical actions.</p></div><span class="tag">LOCAL DEMO ASSISTANT</span></div>
+        <div class="assistant-layout">
+          <article class="panel assistant-panel"><div class="assistant-intro"><span class="assistant-avatar">✳</span><div><b>EcoGuard Assistant</b><small>Answers are generated from this browser's current simulated campus data.</small></div></div><div class="suggested-prompts"><button class="prompt-chip">Why did electricity increase this week?</button><button class="prompt-chip">Which block wastes the most electricity?</button><button class="prompt-chip">How can we reduce water use?</button><button class="prompt-chip">Give me a plan to reduce electricity by 15%.</button></div><div id="assistantConversation" class="assistant-conversation"><div class="assistant-message">Hello! Ask me about your campus's current electricity, water, anomaly alerts or maintenance actions. I can also create an actionable checklist.</div></div><form id="assistantForm" class="assistant-form"><input id="assistantQuestion" type="text" placeholder="Ask a question about your campus…" autocomplete="off" required><button class="primary-btn" type="submit">Ask ↗</button></form><p class="disclaimer">Prototype limitation: this is a rule-based, data-aware assistant running locally. It does not call an external generative AI service. Connect an authenticated AI backend for production use; never put a secret API key in browser JavaScript.</p></article>
+        </div>
+      </section>
+
+      <section class="page-section" id="about">
+        <div class="about-hero"><div class="about-symbol">⌁</div><span class="eyebrow">SMARTER RESOURCE MANAGEMENT</span><h2>Small signals.<br><em>Meaningful savings.</em></h2><p>EcoGuard is a browser-based campus resource monitoring concept that helps administrators spot unusual electricity and water consumption before wastage goes unnoticed.</p></div>
+        <div class="about-grid"><article class="panel"><h3>What EcoGuard does</h3><p>It simulates readings for campus buildings and hostel blocks, compares them with adaptive historical patterns, visualizes trends and creates reviewable alerts.</p></article><article class="panel"><h3>Technology stack</h3><p>HTML5 · CSS3 · JavaScript ES6+ · Chart.js 4 · Browser LocalStorage. No paid API, physical sensor or external database is required for this demo.</p></article><article class="panel"><h3>Important limitation</h3><p>This hackathon demo uses simulated data. An alert means a reading is statistically unusual compared with historical patterns; it does not prove that a tap, pipe or appliance is physically leaking or faulty.</p></article><article class="panel"><h3>Next steps</h3><p>A production deployment could connect verified smart meters, role-based access, secure server storage, notification channels and more advanced forecasting.</p></article></div>
+        <div class="reset-panel"><div><h3>Reset demo environment</h3><p>Restore original sample readings and clear demo alert history.</p></div><button class="danger-btn" id="resetBtn">↻ Reset demo data</button></div>
+      </section>
+      <footer class="footer">ECOGUARD <span>•</span> SMART CAMPUS RESOURCE MONITOR <span class="footer-right">DEMO DATA — NOT CONNECTED TO PHYSICAL SENSORS</span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
